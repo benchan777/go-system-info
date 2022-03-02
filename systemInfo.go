@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"log"
+	"net/http"
 	"os"
 
 	"github.com/shirou/gopsutil/v3/cpu"
@@ -44,9 +46,34 @@ func saveData(data *System_Info) {
 	_ = os.WriteFile("output.json", []byte(jsonify), 0644)
 }
 
-func main() {
+// Homepage Route
+func homePageHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+
+	// fmt.Fprintf(w, "Welcome to the HomePage!")
+	// fmt.Println("Endpoint Hit: homePage")
+	w.Write([]byte("<h1>Hello World!</h1>"))
+}
+
+// Route
+func getDataHandler(w http.ResponseWriter, r *http.Request) {
 	data := System_Info{}
 	getSystemInfo(&data)
 	saveData(&data)
+	json.NewEncoder(w).Encode(data)
+}
 
+// Request handler
+func handleRequests(mux *http.ServeMux) {
+	mux.HandleFunc("/", homePageHandler)
+	mux.HandleFunc("/api", getDataHandler)
+	log.Fatal(http.ListenAndServe(":3000", mux))
+}
+
+func main() {
+	mux := http.NewServeMux()
+	handleRequests(mux)
 }
