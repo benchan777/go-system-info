@@ -1,4 +1,4 @@
-module github.com/benchan777/go-system-info
+module github.com/benchan777/go-system-info-api
 
 go 1.17
 
