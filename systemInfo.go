@@ -13,7 +13,7 @@ import (
 )
 
 // Struct to store system info
-type System_Info struct {
+type SystemInfo struct {
 	HostName     string
 	CPUName      string
 	DiskCapacity uint64
@@ -23,7 +23,7 @@ type System_Info struct {
 	RamAvailable uint64
 }
 
-func getSystemInfo(data *System_Info) {
+func getSystemInfo(data *SystemInfo) {
 	// Get cpu, disk, and host info
 	cpuInfo, _ := cpu.Info()
 	hostInfo, _ := host.Info()
@@ -41,7 +41,7 @@ func getSystemInfo(data *System_Info) {
 }
 
 // Function to Jsonify data nd write it to a file
-func saveData(data *System_Info) {
+func saveData(data *SystemInfo) {
 	jsonify, _ := json.Marshal(data)
 	_ = os.WriteFile("output.json", []byte(jsonify), 0644)
 }
@@ -60,7 +60,7 @@ func homePageHandler(w http.ResponseWriter, r *http.Request) {
 
 // Route
 func getDataHandler(w http.ResponseWriter, r *http.Request) {
-	data := System_Info{}
+	data := SystemInfo{}
 	getSystemInfo(&data)
 	saveData(&data)
 	json.NewEncoder(w).Encode(data)
