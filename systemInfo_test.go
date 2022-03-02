@@ -8,6 +8,14 @@ import (
 	"testing"
 )
 
+func BenchmarkGetSystemInfo(b *testing.B) {
+	data := SystemInfo{}
+
+	for i := 0; i < b.N; i++ {
+		getSystemInfo(&data)
+	}
+}
+
 func TestHomePageHandlerStatusCode(t *testing.T) {
 	var tests = []struct {
 		url                string
