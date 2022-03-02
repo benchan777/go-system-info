@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -74,5 +75,6 @@ func handleRequests(mux *http.ServeMux) {
 func main() {
 	// Run the server
 	mux := http.NewServeMux()
+	fmt.Println("Server running at localhost:3000")
 	handleRequests(mux)
 }
