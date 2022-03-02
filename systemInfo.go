@@ -17,7 +17,7 @@ type SystemInfo struct {
 	HostName     string
 	CPUName      string
 	DiskCapacity uint64
-	DiskUage     uint64
+	DiskUsage    uint64
 	DiskFree     uint64
 	RamCapacity  uint64
 	RamAvailable uint64
@@ -34,7 +34,7 @@ func getSystemInfo(data *SystemInfo) {
 	data.HostName = hostInfo.Hostname
 	data.CPUName = cpuInfo[0].ModelName
 	data.DiskCapacity = diskInfo.Total / 1024 / 1024
-	data.DiskUage = diskInfo.Used / 1024 / 1024
+	data.DiskUsage = diskInfo.Used / 1024 / 1024
 	data.DiskFree = diskInfo.Free / 1024 / 1024
 	data.RamCapacity = ramInfo.Total / 1024 / 1024
 	data.RamAvailable = ramInfo.Available / 1024 / 1024
@@ -53,12 +53,10 @@ func homePageHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// fmt.Fprintf(w, "Welcome to the HomePage!")
-	// fmt.Println("Endpoint Hit: homePage")
 	w.Write([]byte("<h1>Hello World!</h1>"))
 }
 
-// Route
+// Route to get data and return as json
 func getDataHandler(w http.ResponseWriter, r *http.Request) {
 	data := SystemInfo{}
 	getSystemInfo(&data)
@@ -74,6 +72,7 @@ func handleRequests(mux *http.ServeMux) {
 }
 
 func main() {
+	// Run the server
 	mux := http.NewServeMux()
 	handleRequests(mux)
 }
