@@ -1,6 +1,9 @@
 package main
 
 import (
+	"encoding/json"
+	"os"
+
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/host"
@@ -33,4 +36,17 @@ func getSystemInfo(data *System_Info) {
 	data.DiskFree = diskInfo.Free / 1024 / 1024
 	data.RamCapacity = ramInfo.Total / 1024 / 1024
 	data.RamAvailable = ramInfo.Available / 1024 / 1024
+}
+
+// Function to Jsonify data nd write it to a file
+func saveData(data *System_Info) {
+	jsonify, _ := json.Marshal(data)
+	_ = os.WriteFile("output.json", []byte(jsonify), 0644)
+}
+
+func main() {
+	data := System_Info{}
+	getSystemInfo(&data)
+	saveData(&data)
+
 }
