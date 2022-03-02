@@ -1,4 +1,4 @@
-module systemInfo
+module github.com/benchan777/go-system-info
 
 go 1.17
 
