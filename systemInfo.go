@@ -28,8 +28,17 @@ func getSystemInfo(data *SystemInfo) {
 	// Get cpu, disk, and host info
 	cpuInfo, _ := cpu.Info()
 	hostInfo, _ := host.Info()
-	diskInfo, _ := disk.Usage("\\")
 	ramInfo, _ := mem.VirtualMemory()
+	var diskInfo *disk.UsageStat
+
+	switch hostInfo.OS {
+	case "darwin":
+		diskInfo, _ = disk.Usage("/")
+	case "windows":
+		diskInfo, _ = disk.Usage("\\")
+	default:
+		diskInfo, _ = disk.Usage("/")
+	}
 
 	// Store data into struct
 	data.HostName = hostInfo.Hostname
